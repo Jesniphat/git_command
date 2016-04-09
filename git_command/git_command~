@@ -1,0 +1,110 @@
+0. ตั้งค่า user/email ซึ่งเป็น key ก่อน
+	git config --global user.name sak
+	git config --global user.email sak@ns.co.th
+
+1. เริ่มต้นกำหนด folder ใช้งาน
+	cd D:\project
+	git init
+
+2. เพิ่มไฟล์
+	git add
+     ถ้าต้องการเลือก Add ไฟล์ทั้งหมดภายใน Directory และ Sub-Directory ให้ใช้คำสั่ง
+	git add .
+     หรือ
+	git add --all  (--all จะรวมถึงไฟล์ที่ถูกลบด้วย )
+   Add เฉพาะกลุ่มของ Code ที่เปลี่ยนแปลงในแต่ละไฟล์ โดยใช้คำสั่ง
+	git add -p  
+
+2.1 ลบไฟล์พร้อมกับ Add
+	git rm <file>  เมื่อเช็ค Status จะเป็น deleted (D) ที่ Add แล้ว
+2.2 ลบจาก Directory แบบปกติก่อน
+	rm <file>
+      เมื่อเช็ค Status จะเห็นเป็น deleted (D) ที่ยังไม่ Add จากนั้นใช้คำสั่ง Add แบบนี้
+	git add --all <file>
+      เมื่อเช็ค Status อีกที คราวนี้จึงจะเห็นเป็น deleted (D) ที่ Add แล้ว
+ไม่ว่าจะทำแบบวิธี 1 หรือ 2 ก็ต้อง Commit ด้วยถึงจะสมบูรณ์
+2.3 ลบ Diractory
+	git rm -r --cached <FolderName>
+
+3. ตรวจสอบสถานะ
+git status
+
+4. commit
+git commit -m "คอมเมนท์"
+
+5. ยกเว้นไฟล์
+สร้างไฟล์ .gitignore
+node_modules/*
+dist/*
+
+6. ทำ tag
+git tag -a ชื่อแท็ก -m "คอมเมนท์"
+
+7. แสดงสาขา
+git branch
+
+8. สร้างสาขาใหม่
+git branch dev
+
+9. เปลี่ยนสาขา
+git checkout dev
+
+10. สร้าง alias สำหรับคำสั่งยาว ๆ
+git config --global alias.tree 'log --graph --decorate --pretty=oneline --abbrev-commit'
+--system มีผลทั้งเครื่อง
+--global มีผลเฉพาะ user นี้
+ไม่ระบุเลย มีผลเฉพาะ repo นี้
+git config --global --unset alias.tree
+
+11. การรวมสาขา เอา dev มารวมกับสาขา master
+git checkout master
+git merge dev
+git status
+
+12. การบันทึกชั่วคราวแทนการ commit เพื่อย้ายไปทำงานที่สาขาอื่นก่อน
+git stash
+git checkout otherwork
+
+13. ดูงานที่พักไว้
+git stash list
+
+14 เอางานที่ค้างไว้กลับมาทำ
+git checkout master
+git stash apply
+git status
+
+15. ดึงงานจาก server มาทำ
+git clone http://github.com/xxx/yyy.git
+ระบบจะสร้าง alias ชื่อ origin ชี้กลับไปที่ server ให้
+git remote -v
+
+
+16. ส่งงานขึ้น server
+git commit -m "test"
+git push -u origin branchName
+
+17. ดึงไฟล์ที่เปลี่ยนจาก server
+git fetch
+git status
+
+18. ถึงไฟล์จาก server แล้ว merge ด้วย
+git pull
+(git fetch + git merge)
+
+19. นำงาน local ส่งขึ้น server
+git remote add origin http://github.com/user/repo.git
+git push -u origin master
+
+20. backup repo เฉพาะบางสาขา
+git archive master --format=zip --output=../repobak.zip
+
+21. backup เฉพาะ commit ล่าสุด
+git archive HEAD --format=zip --output=../repolast.zip
+
+22. backup ทั้ง repo
+แบบทั้งหมด
+git bundle create ../repobak.repo --all
+แบบเลือกสาขา
+git bundle create ../repobak.repo master
+
+git clone repo.bundle repo -b master
